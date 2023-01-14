@@ -1,14 +1,11 @@
 
-const {Product} = require("../models");
+const {Product,Category} = require("../models");
 
 
 
 exports.create = (req,res) => {
     const {name,description,cost,categoryId} = req.body;
 
-    if(!name){
-        res.status(400).send({message:"Name of the product cannot be empty"});
-    }
 
 const product = {
     name,
@@ -46,12 +43,43 @@ exports.findOne = (req,res) => {
     Product.findByPk(productId)
     .then(product => {
 
-        if(!product){
+        if(!product){ 
             res.status(404).send({message:"Product not found"});
         }
         res.send(product);
     })
     .catch((err) => {
         res.status(500).send({message:err.message || "Something went wrong"});
+    })
+}
+
+exports.findProductsUnderCategory = (req,res) => {
+    Product.findAll({
+        where:{
+        categoryId:req.params.categoryId
+        }
+    })
+    .then(products => {
+        res.send(products);
+    })
+    .catch((err) => {
+        res.status(500).send({message:"Something went wrong while getting products for given category id"});
+    })
+
+}
+
+
+exports.findProductUnderCategory = (req,res) => {
+    Product.findAll({
+        where:{
+        categoryId:req.params.categoryId,
+        id:req.params.productId
+        }
+    })
+    .then(product => {
+        res.send(product);
+    })
+    .catch((err) => {
+        res.status(500).send({message:"Something went wrong while getting products for given category id"});
     })
 }
