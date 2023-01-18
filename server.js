@@ -21,6 +21,9 @@ require("./Routes/category.routes")(app);
 // import product routes
 require("./Routes/product.routes")(app);
 
+// import auth routes
+require("./Routes/auth.routes")(app);
+
 app.listen(process.env.PORT,() => {
     console.log(`Application is running on port ${process.env.PORT}`);
 })
