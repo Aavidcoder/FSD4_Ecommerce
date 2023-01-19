@@ -1,16 +1,16 @@
-const {User} = require("../models");
+const {User,Roles} = require("../models");
 
 const checkDuplicateEmailOrUserName = (req,res,next) => {
 
     const{userName,email} = req.body;
 
-    const checkUserName =  User.finfOne({
+    const checkUserName =  User.findOne({
         where:{
             userName:userName
         }
     });
 
-    const checkEmail = User.finfOne({
+    const checkEmail = User.findOne({
         where:{
             email:email
         }
@@ -29,9 +29,23 @@ const checkDuplicateEmailOrUserName = (req,res,next) => {
     })
 }
 
+const checkRolesExists = (req,res,next) => {
+    const roles = req.body.roles;
+
+    if(roles){
+        for(let i=0;i<roles.length;i++){
+            if(!Roles.includes(roles[i])){
+                res.status(400).send({message:"Failed! Role does not exists" + roles[i]});
+                return;
+            }
+        }
+    }
+    next()
+}
 
 const verifySignUp = {
-    checkDuplicateEmailOrUserName
+    checkDuplicateEmailOrUserName,
+    checkRolesExists
 }
 
 module.exports = verifySignUp;

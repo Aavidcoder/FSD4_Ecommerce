@@ -43,4 +43,6 @@ db.User.belongsToMany(db.Role,{
     through:"userRoles"
 })
 
+db.ROLES = ["user","admin"]
+
 module.exports = db;
