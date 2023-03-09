@@ -1,4 +1,4 @@
-const {User,Roles} = require("../models");
+const {User,ROLES} = require("../models");
 
 const checkDuplicateEmailOrUserName = (req,res,next) => {
 
@@ -25,7 +25,7 @@ const checkDuplicateEmailOrUserName = (req,res,next) => {
         next();
     })
     .catch((err) => {
-        res.status.send({message:err.message || "Something went wrong"})
+        res.status(500).send({message:err.message || "Something went wrong"})
     })
 }
 
@@ -34,7 +34,7 @@ const checkRolesExists = (req,res,next) => {
 
     if(roles){
         for(let i=0;i<roles.length;i++){
-            if(!Roles.includes(roles[i])){
+            if(!ROLES.includes(roles[i])){
                 res.status(400).send({message:"Failed! Role does not exists" + roles[i]});
                 return;
             }

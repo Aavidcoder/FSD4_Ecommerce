@@ -4,6 +4,10 @@ const Category = db.Category;
 
 exports.create = function(req,res){
 
+    if(!req.isAdmin){
+        return res.status(403).send({message:"OOPS! you are unauthorized to perform this task"});
+    }
+
    
     const category = {
         name: req.body.name,
@@ -53,6 +57,11 @@ exports.getOne = (req,res) => {
 
 
 exports.update = (req,res) => {
+
+    if(!req.isAdmin){
+        return res.status(403).send({message:"OOPS! you are unauthorized to perform this task"});
+    }
+
     const categoryId = req.params.id;
     const {name,description} = req.body;
 
@@ -79,6 +88,11 @@ exports.update = (req,res) => {
 }
 
 exports.delete = (req,res) => {
+
+    if(!req.isAdmin){
+        return res.status(403).send({message:"OOPS! you are unauthorized to perform this task"});
+    }
+
    const categoryId = req.params.id;
    
    Category.destroy({

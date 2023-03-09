@@ -4,6 +4,12 @@ const {Product,Category,Sequelize} = require("../models");
 const Op = Sequelize.Op;
 
 exports.create = (req,res) => {
+
+if(!req.isAdmin){
+    return res.status(403).send({message:"OOPS! you are unauthorized to perform this task"});
+}
+
+
     const {name,description,cost,categoryId} = req.body;
 
 

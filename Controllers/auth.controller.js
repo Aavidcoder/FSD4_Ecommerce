@@ -43,17 +43,23 @@ exports.signIn = async (req,res) => {
             return res.status(401).send({message:"Invalid password"});
         }
 
-        console.log(user.id)
+        // console.log(user.id)
         const token = jwt.sign({ id:user.id }, process.env.SECRET_KEY, {expiresIn:86400});
-        console.log(token);
+        // console.log(token);
+
+        var roles = [];
+
+        const allRoles = await user.getRoles();
         
-        
+        allRoles.forEach(role => {
+            roles.push(role.name);
+        });
     
 
         res.send({id:user.id,
             userName:user.userName,
             email:user.email,
-            roles:user.roles,
+            roles:roles,
             accessToken:token
         }) 
 }

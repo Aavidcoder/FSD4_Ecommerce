@@ -18,7 +18,19 @@ const verifyToken = (req,res,next) => {
             const userId = decoded.id
 
             const user = await User.findByPk(userId);
+            const roles = await user.getRoles();
+            
+            const eligibleRoles = [];
+
+            roles.forEach(role => {
+                eligibleRoles.push(role.name);
+            });
+
+            // console.log(eligibleRoles);
+
             req.user=user;
+            req.roles = eligibleRoles;
+            req.isAdmin = eligibleRoles.includes('admin')
             next();
             
 
